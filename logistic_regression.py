@@ -47,8 +47,8 @@ class LogisticRegressionClassifier():
         y = y.reshape(-1, 1)
         w = w.reshape(-1, 1)
 
-        nll = -np.sum(y.T @ np.log(logistic(X @ w))
-                      + (1 - y.T) @ np.log(1 - logistic(X @ w)))    # NLL(X|w)
+        nll = -np.sum(y * np.log(logistic(X @ w))
+                      + (1 - y) * np.log(1 - logistic(X @ w)))    # NLL(X|w)
         cost = nll / X.shape[0]
 
         grad_nll = -(X.T @ (y - logistic(X @ w)))                   # grad NLL(X|w)
@@ -91,7 +91,7 @@ class LogisticRegressionClassifier():
 
                 cost, grad = self.cost_grad(X_batch, y_batch, w)
                 grad = grad.ravel()
-                w -= (lr * grad)
+                w -= lr * grad
                 cost_total += cost * X_batch.shape[0]
 
             cost = cost_total / X.shape[0]
